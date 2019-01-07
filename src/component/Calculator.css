@@ -1,0 +1,26 @@
+.manipulate {
+    display: grid;
+    grid-gap: 7px;
+}
+
+.first {
+    margin:5px;
+}
+
+.changers {
+    display: grid;
+    grid-gap: 7px;
+    grid-template-columns: repeat(3, auto);
+}
+
+.numbers {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    grid-gap: 7px;
+}
+
+.functions {
+    display: grid;
+    grid-gap: 7px;
+    grid-column: 2; 
+}
