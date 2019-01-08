@@ -17,6 +17,8 @@ class Calculator extends Component {
         this.clear = this.clear.bind(this);
         this.clearAll = this.clearAll.bind(this);
         this.backSpace = this.backSpace.bind(this);
+        this.changeSign = this.changeSign.bind(this);
+        this.percent = this.percent.bind(this);
     }
 
     addNumber(num) {
@@ -65,6 +67,20 @@ class Calculator extends Component {
         }
     }
 
+    changeSign() {
+        var changed = this.state.display * -1;
+        this.setState({
+            display: changed
+        })
+    }
+
+    percent() {
+        var percent = this.state.display / 100;
+        this.setState({
+            display: percent
+        })
+    }
+
     render() {
         return(
             <div className='calculator'>
@@ -79,8 +95,8 @@ class Calculator extends Component {
                                 <CalcButton onClick={this.clearAll}>AC</CalcButton>
                                 : <CalcButton onClick={this.clear}>C</CalcButton>
                             }
-                            <CalcButton>-/+</CalcButton>
-                            <CalcButton>%</CalcButton>
+                            <CalcButton onClick={this.changeSign}>-/+</CalcButton>
+                            <CalcButton onClick={this.percent}>%</CalcButton>
                         </div>
                         <div className='numbers'>
                             <CalcButton onClick={() => this.addNumber(1)}>1</CalcButton>

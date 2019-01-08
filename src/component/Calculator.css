@@ -1,10 +1,21 @@
+.display {
+    margin-bottom: 7px;
+    width: 221px;
+    background-color: rgb(199, 204, 209);
+    color: black;
+    text-align: end;
+    padding-right: 7px;
+    margin-right: 7px;
+    border-radius: 4px;
+}
+
 .manipulate {
     display: grid;
     grid-gap: 7px;
 }
 
-.first {
-    margin:5px;
+.changers {
+    padding-bottom: 7px;
 }
 
 .changers {

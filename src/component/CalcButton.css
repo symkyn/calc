@@ -3,3 +3,7 @@
     height: 50px;
     border-radius: 7px;
 }
+
+button:active {
+    box-shadow: inset 0px 0px 80px 0px rgba(37, 37, 37, 0.25);
+  }
