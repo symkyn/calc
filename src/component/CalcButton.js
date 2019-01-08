@@ -1,7 +1,8 @@
 import React from 'react';
+import './CalcButton.css'
 
 const CalcButton = ({ children, ...rest}) => (
-    <button {...rest}>{children}</button>
+    <button className='button' {...rest}>{children}</button>
 )
 
 export default CalcButton;

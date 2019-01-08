@@ -8,7 +8,7 @@ class Calculator extends Component {
         super()
 
         this.state={
-            answer: 0,
+            display: 0,
             history: [],
         }
 
@@ -16,30 +16,32 @@ class Calculator extends Component {
         this.addDecimal = this.addDecimal.bind(this);
         this.clear = this.clear.bind(this);
         this.clearAll = this.clearAll.bind(this);
+        this.backSpace = this.backSpace.bind(this);
     }
 
     addNumber(num) {
-        if(this.state.answer === 0) {
+        if(this.state.display === 0) {
             this.setState({
-                answer: num
+                display: num
             })
         } else {
-            var newNumber = Number(this.state.answer.toString() + num.toString());
+            var newNumber = Number(this.state.display.toString() + num.toString());
             this.setState({
-                answer: newNumber
+                display: newNumber
             })
         }
     }
 
     addDecimal() {
+        if(this.state.display % 1 === 0)
         this.setState({
-            answer: this.state.answer.toString() + '.'
+            display: this.state.display.toString() + '.'
         })
     }
 
     clear() {
         this.setState({
-            answer: 0
+            display: 0
         })
     }
 
@@ -49,17 +51,31 @@ class Calculator extends Component {
         })
     }
 
+    backSpace() {
+        var string = this.state.display.toString();
+        if (string.length > 1) {
+            var newString = string.substr(0, (string.length - 1))
+            this.setState({
+                display: Number(newString)
+            })
+        } else {
+            this.setState({
+                display: 0
+            })
+        }
+    }
+
     render() {
         return(
             <div className='calculator'>
                 <div className='display'>
-                    {this.state.answer}
+                    {this.state.display}
                 </div>
                 <div className='manipulate'>
                     <div classname='first'>
                         <div className='changers'>
                             {
-                                this.state.answer === 0 ?
+                                this.state.display === 0 ?
                                 <CalcButton onClick={this.clearAll}>AC</CalcButton>
                                 : <CalcButton onClick={this.clear}>C</CalcButton>
                             }
@@ -78,6 +94,7 @@ class Calculator extends Component {
                             <CalcButton onClick={() => this.addNumber(9)}>9</CalcButton>
                             <CalcButton onClick={() => this.addNumber(0)}>0</CalcButton>
                             <CalcButton onClick={() => this.addDecimal()}>.</CalcButton>
+                            <CalcButton onClick={() => this.backSpace()}>{'<--'}</CalcButton>
                         </div>
                     </div>
                     <div className='functions'>
