@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 import './Calculator.css';
 import CalcButton from './CalcButton';
+import CurrentProblem from './CurrentProblem';
 
 class Calculator extends Component {
     constructor() { 
@@ -9,7 +10,11 @@ class Calculator extends Component {
 
         this.state={
             display: 0,
+            runningTotal: 0,
+            operator: null,
             history: [],
+            historyIndex: 0,
+            answer: true,
         }
 
         this.addNumber = this.addNumber.bind(this);
@@ -19,12 +24,15 @@ class Calculator extends Component {
         this.backSpace = this.backSpace.bind(this);
         this.changeSign = this.changeSign.bind(this);
         this.percent = this.percent.bind(this);
+        this.executeOperation = this.executeOperation.bind(this);
+        this.equals = this.equals.bind(this);
     }
 
     addNumber(num) {
-        if(this.state.display === 0) {
+        if(this.state.answer) {
             this.setState({
-                display: num
+                display: num,
+                answer: false,
             })
         } else {
             var newNumber = Number(this.state.display.toString() + num.toString());
@@ -81,14 +89,77 @@ class Calculator extends Component {
         })
     }
 
+    executeOperation(operator) {
+        var newValue = this.state.display;
+        if(!this.state.history[this.state.historyIndex]){
+            this.state.history[this.state.historyIndex] = [];
+        }
+        this.state.history[this.state.historyIndex].push(this.state.display)
+        this.state.history[this.state.historyIndex].push(operator)
+        if (this.state.operator !== null) {
+            switch(this.state.operator) {
+                case '+':
+                    newValue = this.state.runningTotal + this.state.display;
+                    break;
+                case '-':
+                    newValue = this.state.runningTotal - this.state.display;
+                    break;
+                case '*':
+                    newValue = this.state.runningTotal * this.state.display;
+                    break;
+                case '/':
+                    newValue = this.state.runningTotal / this.state.display;
+                    break;
+            }
+        }
+        this.setState({
+            runningTotal: newValue,
+            display: newValue,
+            operator: operator,
+            answer: true,
+        })
+    }
+
+    equals() {
+        var newValue = this.state.display;
+        this.state.history[this.state.historyIndex].push(this.state.display)
+        this.state.history[this.state.historyIndex].push('=')
+        if (this.state.operator !== null) {
+            switch(this.state.operator) {
+                case '+':
+                    newValue = this.state.runningTotal + this.state.display;
+                    break;
+                case '-':
+                    newValue = this.state.runningTotal - this.state.display;
+                    break;
+                case '*':
+                    newValue = this.state.runningTotal * this.state.display;
+                    break;
+                case '/':
+                    newValue = this.state.runningTotal / this.state.display;
+                    break;
+            }
+        }
+        this.state.history[this.state.historyIndex].push(newValue)
+        this.setState({
+            runningTotal: 0,
+            display: newValue,
+            operator: null,
+            answer: true,
+            historyIndex: this.state.historyIndex + 1,
+        })
+        
+    }
+
     render() {
         return(
             <div className='calculator'>
+                <CurrentProblem history={this.state.history} />
                 <div className='display'>
                     {this.state.display}
                 </div>
                 <div className='manipulate'>
-                    <div classname='first'>
+                    <div className='first'>
                         <div className='changers'>
                             {
                                 this.state.display === 0 ?
@@ -114,11 +185,11 @@ class Calculator extends Component {
                         </div>
                     </div>
                     <div className='functions'>
-                        <CalcButton>/</CalcButton>
-                        <CalcButton>X</CalcButton>
-                        <CalcButton>-</CalcButton>
-                        <CalcButton>+</CalcButton>
-                        <CalcButton>=</CalcButton>
+                        <CalcButton onClick={() => this.executeOperation('/')}>/</CalcButton>
+                        <CalcButton onClick={() => this.executeOperation('*')}>*</CalcButton>
+                        <CalcButton onClick={() => this.executeOperation('-')}>-</CalcButton>
+                        <CalcButton onClick={() => this.executeOperation('+')}>+</CalcButton>
+                        <CalcButton onClick={this.equals}>=</CalcButton>
                     </div>
                 </div>
             </div>
